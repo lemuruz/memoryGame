@@ -1,12 +1,12 @@
-let gameMode = "critical"; // You can change the game mode here
-let matchMode = "4match"
+let gameMode = "hard"; // You can change the game mode here
+let matchMode = "2match"
 let row_ = 0;
 let colum_ = 6;
 let clicked1 = [];
 let clicked2 = [];
 let board = [];
 let paired = [];
-
+let fpsCounter = 0;
 // Set row and column based on game mode
 if (gameMode == "easy") {
     row_ = 2;
@@ -20,13 +20,14 @@ if (gameMode == "easy") {
 }
 
 function setup() {
+    frameRate(60);
     createCanvas(windowWidth, windowHeight);
     background('white');
     let numbers = null;
     if (matchMode == "2match"){
-      numbers = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9];
+      numbers = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10,10];
     }else if(matchMode == "4match"){
-      numbers = [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4];
+      numbers = [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5];
     }
     
     
@@ -44,6 +45,7 @@ function setup() {
 }
 
 function draw() {
+    fpsCounter = fpsCounter + 1;
     background('white'); // Clear the canvas
     textAlign(CENTER, CENTER);
     textSize(20);
@@ -51,7 +53,7 @@ function draw() {
     let text2;
     const blockX = floor(windowWidth / colum_);
     const blockY = floor(windowHeight / row_);
-    
+    stroke('black');
     // Draw vertical lines for columns
     for (let i = 1; i < colum_; i++) {
         line(i * blockX, 0, i * blockX, windowHeight);
@@ -70,6 +72,7 @@ function draw() {
             clicked1[1] * blockX + blockX / 2,
             clicked1[0] * blockY + blockY / 2
         );
+        drawLine(clicked1[1] * blockX + 5,clicked1[0] * blockY,text1,fpsCounter%100);
     }
 
     // Show the second clicked number
@@ -80,6 +83,7 @@ function draw() {
             clicked2[1] * blockX + blockX / 2,
             clicked2[0] * blockY + blockY / 2
         );
+        drawLine(clicked2[1] * blockX + 5,clicked2[0] * blockY,text2,fpsCounter%100);
         
         // If the two numbers match, add them to the paired array
         if (text1 == text2) {
@@ -91,7 +95,9 @@ function draw() {
     paired.forEach((axis) => {
         const numshow = board[axis[0]][axis[1]].toString();
         text(numshow, axis[1] * blockX + blockX / 2, axis[0] * blockY + blockY / 2);
+        drawLine(axis[1] * blockX + 5,axis[0] * blockY,numshow);
         text(numshow, axis[3] * blockX + blockX / 2, axis[2] * blockY + blockY / 2);
+        drawLine(axis[3] * blockX + 5,axis[2] * blockY,numshow);
     });
 }
 //function 
@@ -101,7 +107,7 @@ function mouseClicked() {
         const blockY = floor(windowHeight / row_);
         const arrayY = floor(mouseY / blockY);
         const arrayX = floor(mouseX / blockX);
-        
+        drawLine(mouseX,mouseY,2);
         // Handle the first and second clicks
         if (clicked1.length == 0) {
             clicked1.push(arrayY, arrayX);
@@ -116,4 +122,21 @@ function mouseClicked() {
         console.log(clicked1);
         console.log(clicked2);
     }
+}
+function drawLine(x,y,n,z){
+  stroke('magenta');
+  let linedrawingSpd = 5;
+  let lengthY = windowHeight / (row_)
+  let drawing = 0;
+  for (let i=0;i<n;i++){
+    //drawing = 0;
+    //for (let animate = 0;animate<linedrawingSpd;animate++){
+    //    //frameRate(1);
+    //    drawing = drawing + lengthY/linedrawingSpd;
+    //    line(x + i*10 , y, x + i*10, y + drawing);
+    //  }
+    line(x + i*10 , y, x + i*10, y + lengthY*(z/100));
+     
+  }
+  
 }
