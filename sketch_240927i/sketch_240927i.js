@@ -1,3 +1,4 @@
+//6601012620046
 let row_ = 6;
 let colum_ = 6;
 let board = [];
