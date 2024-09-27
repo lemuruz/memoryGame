@@ -1,7 +1,18 @@
 let gameMode = "easy"; // You can change the game mode here
 let row_ = 0;
 let colum_ = 6;
+let clicked1 = [];
+let clicked2 = [];
 let board = [];
+let paired = [];
+
+// Set row and column based on game mode
+if (gameMode == "easy") {
+    row_ = 2;
+    colum_ = 5;
+} else if (gameMode == "hard") {
+    row_ = 4;
+    colum_ = 5;
 } else if (gameMode == "critical") {
     row_ = 8;
     colum_ = 5;
