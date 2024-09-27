@@ -1,4 +1,5 @@
-let gameMode = "easy"; // You can change the game mode here
+let gameMode = "critical"; // You can change the game mode here
+let matchMode = "4match"
 let row_ = 0;
 let colum_ = 6;
 let clicked1 = [];
@@ -21,7 +22,13 @@ if (gameMode == "easy") {
 function setup() {
     createCanvas(windowWidth, windowHeight);
     background('white');
-    let numbers = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9];
+    let numbers = null;
+    if (matchMode == "2match"){
+      numbers = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9];
+    }else if(matchMode == "4match"){
+      numbers = [0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4];
+    }
+    
     
     // Fill the board with random numbers
     for (let i = 0; i < row_; i++) {
@@ -87,7 +94,7 @@ function draw() {
         text(numshow, axis[3] * blockX + blockX / 2, axis[2] * blockY + blockY / 2);
     });
 }
-
+//function 
 function mouseClicked() {
     if (clicked2.length == 0) {
         const blockX = floor(windowWidth / colum_);
