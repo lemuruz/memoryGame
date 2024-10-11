@@ -12,8 +12,10 @@ let board = [];
 let paired = [];
 let fpsCounter = 0;
 let frameRate_ = 60;
-let timerMinute = 5; 
-let timerSecond = 20;
+//////////////////adjust this to variable to set the timer/////////////////////////////
+let timerMinute = 0; 
+let timerSecond = 15;
+////////////////////////////////////////////////////////////////////////////////////////
 let timerFrame = (timerSecond*frameRate_) + (timerMinute*60*frameRate_);
 let RemainingFrame = 0;
 console.log(timerFrame);
@@ -62,10 +64,19 @@ function draw() {
     textAlign(CENTER, CENTER);
     textSize(40);
     RemainingFrame = timerFrame - fpsCounter;
-    /*
-    if (RemainingFrame < 0){end the game}
-    */
-    text(floor(RemainingFrame/3600) +" : "+(floor(RemainingFrame/60))%60 ,windowWidth/2,windowHeight/2)
+    
+    if (RemainingFrame < 0){
+        RemainingFrame = 0;
+        stroke('red');
+        //end the game
+        text("time out!",windowWidth/2,windowHeight/2)
+        stroke('black');
+        }
+     else{
+        text(floor(RemainingFrame/3600) +" : "+(floor(RemainingFrame/60))%60 ,windowWidth/2,windowHeight/2)
+       }
+    
+    
     textSize(20);
     let text1;
     let text2;
