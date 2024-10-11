@@ -10,6 +10,7 @@ let clicked1 = [];
 let clicked2 = [];
 let board = [];
 let paired = [];
+//let pairCount = 0;
 let fpsCounter = 0;
 let frameRate_ = 60;
 //////////////////adjust this to variable to set the timer/////////////////////////////
@@ -25,12 +26,15 @@ console.log(timerFrame);
 if (gameMode == "easy") {
     row_ = 2;
     colum_ = 5;
+    //pairCount = 10;
 } else if (gameMode == "hard") {
     row_ = 4;
     colum_ = 5;
+    //pairCount = 20;
 } else if (gameMode == "critical") {
     row_ = 8;
     colum_ = 5;
+    //pairCount = 40;
 }
 
 function setup() {
@@ -40,8 +44,10 @@ function setup() {
     let numbers = null;
     if (matchMode == "2match"){
       numbers = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10,10,11,11,12,12,13,13,14,14,15,15,16,16,17,17,18,18,19,19,20,20];
+      //pairCount = pairCount/2;
     }else if(matchMode == "4match"){
       numbers = [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5,6,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10];
+      //pairCount = pairCount/4;
     }
     
     
@@ -63,12 +69,17 @@ function draw() {
     background('white'); // Clear the canvas
     textAlign(CENTER, CENTER);
     textSize(40);
+    /*
+    if (pairCount == paired.length()){
+      end the game
+    }
+    */
     RemainingFrame = timerFrame - fpsCounter;
     
     if (RemainingFrame < 0){
         RemainingFrame = 0;
         stroke('red');
-        //end the game
+        //end the game 
         text("time out!",windowWidth/2,windowHeight/2)
         stroke('black');
         }
