@@ -1,3 +1,7 @@
+//patiparn nakabodee 6601012620046
+//add multiplayer
+//hint tell player the distanc between the pair 
+//timer
 let gameMode = "hard"; // You can change the game mode here
 let matchMode = "2match"
 let row_ = 0;
@@ -7,6 +11,7 @@ let clicked2 = [];
 let board = [];
 let paired = [];
 let fpsCounter = 0;
+
 // Set row and column based on game mode
 if (gameMode == "easy") {
     row_ = 2;
@@ -48,25 +53,32 @@ function draw() {
     fpsCounter = fpsCounter + 1;
     background('white'); // Clear the canvas
     textAlign(CENTER, CENTER);
+    textSize(40);
+    text(floor(fpsCounter/3600) +" : "+(floor(fpsCounter/60))%60 ,windowWidth/2,windowHeight/2)
     textSize(20);
     let text1;
     let text2;
     const blockX = floor(windowWidth / colum_);
     const blockY = floor(windowHeight / row_);
+    
+    
     stroke('black');
     // Draw vertical lines for columns
     for (let i = 1; i < colum_; i++) {
+        strokeWeight(2);
         line(i * blockX, 0, i * blockX, windowHeight);
     }
 
     // Draw horizontal lines for rows
     for (let i = 1; i < row_; i++) {
+        strokeWeight(2);
         line(0, i * blockY, windowWidth, i * blockY);
     }
 
     // Show the first clicked number
     if (clicked1.length != 0) {
         text1 = board[clicked1[0]][clicked1[1]];
+        strokeWeight(2);
         text(
             text1.toString(),
             clicked1[1] * blockX + blockX / 2,
@@ -78,6 +90,7 @@ function draw() {
     // Show the second clicked number
     if (clicked2.length != 0) {
         text2 = board[clicked2[0]][clicked2[1]];
+        strokeWeight(2);
         text(
             text2.toString(),
             clicked2[1] * blockX + blockX / 2,
@@ -93,11 +106,12 @@ function draw() {
 
     // Show paired numbers on the board
     paired.forEach((axis) => {
+        strokeWeight(2);
         const numshow = board[axis[0]][axis[1]].toString();
         text(numshow, axis[1] * blockX + blockX / 2, axis[0] * blockY + blockY / 2);
-        drawLine(axis[1] * blockX + 5,axis[0] * blockY,numshow);
+        drawLine(axis[1] * blockX + 5,axis[0] * blockY,numshow,fpsCounter%100);
         text(numshow, axis[3] * blockX + blockX / 2, axis[2] * blockY + blockY / 2);
-        drawLine(axis[3] * blockX + 5,axis[2] * blockY,numshow);
+        drawLine(axis[3] * blockX + 5,axis[2] * blockY,numshow,fpsCounter%100);
     });
 }
 //function 
@@ -124,6 +138,7 @@ function mouseClicked() {
     }
 }
 function drawLine(x,y,n,z){
+  strokeWeight(5);
   stroke('magenta');
   let linedrawingSpd = 5;
   let lengthY = windowHeight / (row_)
@@ -138,5 +153,7 @@ function drawLine(x,y,n,z){
     line(x + i*10 , y, x + i*10, y + lengthY*(z/100));
      
   }
+  strokeWeight(2);
+  stroke('black');
   
 }
