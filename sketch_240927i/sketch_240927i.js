@@ -11,6 +11,7 @@ let clicked2 = [];
 let board = [];
 let paired = [];
 let fpsCounter = 0;
+// let player = 2; 
 
 // Set row and column based on game mode
 if (gameMode == "easy") {
@@ -63,6 +64,27 @@ function draw() {
     
     
     stroke('black');
+    /*
+    double the board for all the player 
+    if (player >1){
+      for (let p = 0:p < player:p++){
+          for (let i = 1; i < colum_; i++) {
+              strokeWeight(2);
+              if (p == 1){stroke('red');}
+              else{stroke('blue');}
+              line(i * blockX / player, 0, i * blockX / player, windowHeight);
+           }
+  
+        // Draw horizontal lines for rows
+          for (let i = 1; i < row_; i++) {
+              strokeWeight(2);
+              if (p == 1){stroke('red');}
+              else{stroke('blue');}
+          }
+      }
+    }
+    else 
+    */
     // Draw vertical lines for columns
     for (let i = 1; i < colum_; i++) {
         strokeWeight(2);
