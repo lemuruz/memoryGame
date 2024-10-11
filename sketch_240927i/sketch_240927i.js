@@ -118,7 +118,42 @@ function draw() {
         strokeWeight(2);
         line(0, i * blockY, windowWidth, i * blockY);
     }
-
+    /*
+    add clicked for second player
+    if (p2clicked1.length != 0) {
+        p2text1 = board[clicked1[0]][clicked1[1]];
+        strokeWeight(2);
+        text(
+            text1.toString(),
+            clicked1[1] * blockX + blockX / 2,
+            clicked1[0] * blockY + blockY / 2
+        );
+        drawLine(p2clicked1[1] * blockX + 5,p2clicked1[0] * blockY,text1,fpsCounter%100);
+    }
+    if (p2clicked2.length != 0) {
+        p2text2 = board[clicked2[0]][clicked2[1]];
+        strokeWeight(2);
+        text(
+            text2.toString(),
+            clicked2[1] * blockX + blockX / 2,
+            clicked2[0] * blockY + blockY / 2
+        );
+        drawLine(clicked2[1] * blockX + 5,clicked2[0] * blockY,text2,fpsCounter%100);
+        
+        // If the two numbers match, add them to the paired array
+        if (p2text1 == p2text2) {
+            p2paired.push([p2clicked1[0], p2clicked1[1], p2clicked2[0], p2clicked2[1]]);
+        }
+    }
+    p2paired.forEach((axis) => {
+        strokeWeight(2);
+        const numshow = board[axis[0]][axis[1]].toString();
+        text(numshow, axis[1] * blockX + blockX / 2, axis[0] * blockY + blockY / 2);
+        drawLine(axis[1] * blockX + 5,axis[0] * blockY,numshow,fpsCounter%100);
+        text(numshow, axis[3] * blockX + blockX / 2, axis[2] * blockY + blockY / 2);
+        drawLine(axis[3] * blockX + 5,axis[2] * blockY,numshow,fpsCounter%100);
+    });
+    */
     // Show the first clicked number
     if (clicked1.length != 0) {
         text1 = board[clicked1[0]][clicked1[1]];
