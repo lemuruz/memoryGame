@@ -80,6 +80,7 @@ function draw() {
               strokeWeight(2);
               if (p == 1){stroke('red');}
               else{stroke('blue');}
+              line(0, i * blockY, windowWidth, i * blockY);
           }
       }
     }
