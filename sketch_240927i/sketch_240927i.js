@@ -11,6 +11,12 @@ let clicked2 = [];
 let board = [];
 let paired = [];
 let fpsCounter = 0;
+let frameRate_ = 60;
+let timerMinute = 5; 
+let timerSecond = 20;
+let timerFrame = (timerSecond*frameRate_) + (timerMinute*60*frameRate_);
+let RemainingFrame = 0;
+console.log(timerFrame);
 // let player = 2; 
 
 // Set row and column based on game mode
@@ -26,7 +32,7 @@ if (gameMode == "easy") {
 }
 
 function setup() {
-    frameRate(60);
+    frameRate(frameRate_);
     createCanvas(windowWidth, windowHeight);
     background('white');
     let numbers = null;
@@ -47,7 +53,7 @@ function setup() {
             board[i].push(randomNum);
         }
     }
-    console.log(board);
+    //console.log(board);
 }
 
 function draw() {
@@ -55,7 +61,11 @@ function draw() {
     background('white'); // Clear the canvas
     textAlign(CENTER, CENTER);
     textSize(40);
-    text(floor(fpsCounter/3600) +" : "+(floor(fpsCounter/60))%60 ,windowWidth/2,windowHeight/2)
+    RemainingFrame = timerFrame - fpsCounter;
+    /*
+    if (RemainingFrame < 0){end the game}
+    */
+    text(floor(RemainingFrame/3600) +" : "+(floor(RemainingFrame/60))%60 ,windowWidth/2,windowHeight/2)
     textSize(20);
     let text1;
     let text2;
