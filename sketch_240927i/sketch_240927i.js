@@ -21,6 +21,9 @@ let currentPlayer = 1;
 let player1Score = 0;
 let player2Score = 0;
 
+// New variable for hint
+let hintDistance = null;
+
 // Set row and column based on game mode
 if (gameMode == "easy") {
     row_ = 2;
@@ -126,6 +129,14 @@ function draw() {
     fill('blue');
     text(`Player 2 Score: ${player2Score}`, 3*windowWidth/4, 30);
     fill('black');
+
+    // Display hint
+    if (hintDistance !== null) {
+        textSize(24);
+        fill('green');
+        text(`Distance Hint : ${hintDistance}`, windowWidth/2, windowHeight - 30);
+        fill('black');
+    }
 }
 
 function mouseClicked() {
@@ -139,12 +150,16 @@ function mouseClicked() {
         // Handle the first and second clicks
         if (clicked1.length == 0) {
             clicked1.push(arrayY, arrayX);
+            // Calculate and display hint
+            hintDistance = calculateHint(arrayY, arrayX);
         } else {
             clicked2.push(arrayY, arrayX);
             setTimeout(() => {
                 checkMatch();
                 clicked1 = [];
                 clicked2 = [];
+                // Reset hint
+                hintDistance = null;
                 // Switch player after each turn, regardless of match
                 currentPlayer = currentPlayer === 1 ? 2 : 1;
                 console.log("Turn ended, switched to Player", currentPlayer);
@@ -171,6 +186,24 @@ function checkMatch() {
             console.log(`Player ${currentPlayer} scored a point!`);
         }
     }
+}
+
+function calculateHint(row, col) {
+    let clickedValue = board[row][col];
+    let minDistance = Infinity;
+    
+    for (let i = 0; i < row_; i++) {
+        for (let j = 0; j < colum_; j++) {
+            if (i !== row || j !== col) {  // Don't compare with itself
+                if (board[i][j] === clickedValue) {
+                    let distance = Math.abs(i - row) + Math.abs(j - col);  // Manhattan distance
+                    minDistance = Math.min(minDistance, distance);
+                }
+            }
+        }
+    }
+    
+    return minDistance;
 }
 
 function drawLine(x, y, n, z) {
