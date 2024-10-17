@@ -15,6 +15,7 @@ let timerFrame = (timerSecond * frameRate_) + (timerMinute * 60 * frameRate_);
 let RemainingFrame = 0;
 
 // Variables for multiplayer
+let isMultiplayer = false; // New variable to track game mode
 let currentPlayer = 1;
 let player1Score = 0;
 let player2Score = 0;
@@ -41,12 +42,31 @@ function setup() {
     frameRate(frameRate_);
     createCanvas(windowWidth, windowHeight);
     background('white');
+    
+    // Create a button to toggle between single and multiplayer
+    let toggleButton = createButton('Toggle Single/Multiplayer');
+    toggleButton.position(10, 10);
+    toggleButton.mousePressed(toggleMultiplayer);
+    
+    resetGame();
+}
+
+function resetGame() {
     let numbers = null;
     if (matchMode == "2match") {
         numbers = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20];
     } else if (matchMode == "4match") {
         numbers = [1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10];
     }
+    
+    // Reset game variables
+    board = [];
+    paired = [];
+    fpsCounter = 0;
+    player1Score = 0;
+    player2Score = 0;
+    currentPlayer = 1;
+    gameOver = false;
     
     // Fill the board with random numbers
     for (let i = 0; i < row_; i++) {
@@ -58,6 +78,12 @@ function setup() {
             board[i].push(randomNum);
         }
     }
+}
+
+function toggleMultiplayer() {
+    isMultiplayer = !isMultiplayer;
+    resetGame();
+    console.log(isMultiplayer ? "Switched to Multiplayer" : "Switched to Single Player");
 }
 
 function draw() {
@@ -122,12 +148,17 @@ function draw() {
 
         // Display current player and scores
         textSize(30);
-        fill(currentPlayer === 1 ? 'red' : 'blue');
-        text(`Current Player: ${currentPlayer}`, windowWidth/2, 30);
-        fill('red');
-        text(`Player 1 Score: ${player1Score}`, windowWidth/4, 30);
-        fill('blue');
-        text(`Player 2 Score: ${player2Score}`, 3*windowWidth/4, 30);
+        if (isMultiplayer) {
+            fill(currentPlayer === 1 ? 'red' : 'blue');
+            text(`Current Player: ${currentPlayer}`, windowWidth/2, 30);
+            fill('red');
+            text(`Player 1 Score: ${player1Score}`, windowWidth/4, 30);
+            fill('blue');
+            text(`Player 2 Score: ${player2Score}`, 3*windowWidth/4, 30);
+        } else {
+            fill('green');
+            text(`Single Player Score: ${player1Score}`, windowWidth/2, 30);
+        }
         fill('black');
 
         // Display hint
@@ -145,19 +176,23 @@ function draw() {
         
         textSize(40);
         fill('black');
-        text(`Final Scores:`, windowWidth/2, windowHeight/2 - 60);
-        fill('red');
-        text(`Player 1: ${player1Score}`, windowWidth/2, windowHeight/2);
-        fill('blue');
-        text(`Player 2: ${player2Score}`, windowWidth/2, windowHeight/2 + 60);
-        
-        fill('green');
-        if (player1Score > player2Score) {
-            text("Player 1 Wins!", windowWidth/2, windowHeight/2 + 120);
-        } else if (player2Score > player1Score) {
-            text("Player 2 Wins!", windowWidth/2, windowHeight/2 + 120);
+        if (isMultiplayer) {
+            text(`Final Scores:`, windowWidth/2, windowHeight/2 - 60);
+            fill('red');
+            text(`Player 1: ${player1Score}`, windowWidth/2, windowHeight/2);
+            fill('blue');
+            text(`Player 2: ${player2Score}`, windowWidth/2, windowHeight/2 + 60);
+            
+            fill('green');
+            if (player1Score > player2Score) {
+                text("Player 1 Wins!", windowWidth/2, windowHeight/2 + 120);
+            } else if (player2Score > player1Score) {
+                text("Player 2 Wins!", windowWidth/2, windowHeight/2 + 120);
+            } else {
+                text("It's a Tie!", windowWidth/2, windowHeight/2 + 120);
+            }
         } else {
-            text("It's a Tie!", windowWidth/2, windowHeight/2 + 120);
+            text(`Final Score: ${player1Score}`, windowWidth/2, windowHeight/2);
         }
     }
 }
@@ -183,9 +218,11 @@ function mouseClicked() {
                 clicked2 = [];
                 // Reset hint
                 hintDistance = null;
-                // Switch player after each turn, regardless of match
-                currentPlayer = currentPlayer === 1 ? 2 : 1;
-                console.log("Turn ended, switched to Player", currentPlayer);
+                // Switch player after each turn in multiplayer mode
+                if (isMultiplayer) {
+                    currentPlayer = currentPlayer === 1 ? 2 : 1;
+                    console.log("Turn ended, switched to Player", currentPlayer);
+                }
                 
                 // Check if all pairs are matched
                 if (paired.length * 2 === row_ * colum_) {
@@ -206,12 +243,17 @@ function checkMatch() {
         if (text1 == text2) {
             paired.push([clicked1[0], clicked1[1], clicked2[0], clicked2[1]]);
             // Increase score for the current player
-            if (currentPlayer === 1) {
-                player1Score++;
+            if (isMultiplayer) {
+                if (currentPlayer === 1) {
+                    player1Score++;
+                } else {
+                    player2Score++;
+                }
+                console.log(`Player ${currentPlayer} scored a point!`);
             } else {
-                player2Score++;
+                player1Score++;
+                console.log("Scored a point!");
             }
-            console.log(`Player ${currentPlayer} scored a point!`);
         }
     }
 }
